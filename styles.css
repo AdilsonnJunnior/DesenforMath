@@ -1,0 +1,246 @@
+/* =========================================================
+   RESET GLOBAL
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f4f4;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header {
+    height: 40px;
+    background-color: #333;
+    color: white;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   LAYOUT PRINCIPAL
+   ========================================================= */
+
+.ds-container {
+    display: grid;
+
+    /*
+        Linhas:
+        65% → visualizações
+        35% → cálculos
+    */
+    grid-template-rows: 65% 35%;
+
+    /*
+        Colunas:
+        30% → 3D
+        55% → 2D
+        15% → controles
+    */
+    grid-template-columns: 30fr 55fr 15fr;
+
+    width: 100%;
+    height: calc(100vh - 40px);
+
+    padding: 10px;
+    gap: 10px;
+}
+
+
+/* =========================================================
+   CANVAS 3D
+   ========================================================= */
+
+#canvas-3d {
+    grid-row: 1;
+    grid-column: 1;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #eee;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CANVAS 2D
+   ========================================================= */
+
+#canvas-2d {
+    grid-row: 1;
+    grid-column: 2;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #eee;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   CONTROLES
+   ========================================================= */
+
+.ds-col-controles {
+    grid-row: 1 / span 2;
+    grid-column: 3;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    background-color: #fff;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    padding: 10px;
+
+    overflow-y: auto;
+}
+
+
+/* =========================================================
+   SELECT DA FORMA
+   ========================================================= */
+
+#forma-selector {
+    width: 85%;
+
+    align-self: center;
+
+    padding: 8px;
+
+    font-size: 0.95rem;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    background-color: #fff;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   INPUTS DINÂMICOS
+   ========================================================= */
+
+#inputs-dinamicos {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    width: 100%;
+}
+
+
+/* =========================================================
+   INPUTS E LABELS GERADOS PELO JS
+   ========================================================= */
+
+#inputs-dinamicos label {
+    font-size: 0.9rem;
+    font-weight: 500;
+
+    color: #333;
+}
+
+#inputs-dinamicos input {
+    width: 100%;
+
+    padding: 7px 8px;
+
+    font-size: 0.95rem;
+
+    border: 1px solid #ccc;
+    border-radius: 4px;
+
+    background-color: #fff;
+}
+
+#inputs-dinamicos input:focus {
+    outline: none;
+    border-color: #777;
+}
+
+
+/* =========================================================
+   ÁREA DE CÁLCULO DE VOLUME
+   ========================================================= */
+
+#calculo-volume {
+    grid-row: 2;
+    grid-column: 1;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #f9f9f9;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    padding: 10px;
+
+    overflow-y: auto;
+
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   ÁREA DE CÁLCULO DE ÁREA
+   ========================================================= */
+
+#calculo-area {
+    grid-row: 2;
+    grid-column: 2;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #f9f9f9;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    padding: 10px;
+
+    overflow-y: auto;
+
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
