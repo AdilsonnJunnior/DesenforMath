@@ -1,5 +1,4 @@
 class Piramide {
-
     constructor(lados, ladoBase, altura) {
         this.lados = lados;
         this.ladoBase = ladoBase;
@@ -11,49 +10,44 @@ class Piramide {
     }
 
     calcularApotemaBase() {
-        return this.ladoBase /
-            (2 * Math.tan(Math.PI / this.lados));
+        return this.ladoBase / (2 * Math.tan(Math.PI / this.lados));
     }
 
     calcularAreaBase() {
         const perimetro = this.calcularPerimetroBase();
         const apotema = this.calcularApotemaBase();
-
         return (perimetro * apotema) / 2;
     }
 
     calcularApotemaLateral() {
         const apotemaBase = this.calcularApotemaBase();
+        return Math.sqrt(this.altura ** 2 + apotemaBase ** 2);
+    }
 
-        return Math.sqrt(
-            this.altura ** 2 +
-            apotemaBase ** 2
-        );
+    calcularAlturaPeloApotema(apotemaLateral) {
+        const apotemaBase = this.calcularApotemaBase();
+        return Math.sqrt(apotemaLateral ** 2 - apotemaBase ** 2);
     }
 
     calcularArea() {
         const areaBase = this.calcularAreaBase();
         const perimetro = this.calcularPerimetroBase();
         const apotemaLateral = this.calcularApotemaLateral();
-
-        const areaLateral =
-            (perimetro * apotemaLateral) / 2;
-
+        const areaLateral = (perimetro * apotemaLateral) / 2;
         return areaBase + areaLateral;
     }
 
     calcularVolume() {
         const areaBase = this.calcularAreaBase();
-
         return (areaBase * this.altura) / 3;
     }
 
     gerarPassoAPassoArea() {
-
         const perimetro = this.calcularPerimetroBase();
         const apotemaBase = this.calcularApotemaBase();
         const areaBase = this.calcularAreaBase();
         const apotemaLateral = this.calcularApotemaLateral();
+        const areaLateral = (perimetro * apotemaLateral) / 2;
         const area = this.calcularArea();
 
         return `
@@ -69,6 +63,10 @@ class Piramide {
             P = ${this.lados} × ${this.ladoBase}<br>
             P = ${perimetro}<br><br>
 
+            <strong>Apótema da base:</strong><br>
+            ap = l / (2 × tan(π / n))<br>
+            ap = ${apotemaBase}<br><br>
+
             <strong>Área da base:</strong><br>
             A<sub>base</sub> = (P × ap) / 2<br>
             A<sub>base</sub> = ${areaBase}<br><br>
@@ -79,7 +77,8 @@ class Piramide {
             g = ${apotemaLateral}<br><br>
 
             <strong>Área lateral:</strong><br>
-            A<sub>lateral</sub> = (P × g) / 2<br><br>
+            A<sub>lateral</sub> = (P × g) / 2<br>
+            A<sub>lateral</sub> = ${areaLateral}<br><br>
 
             <strong>Área total:</strong><br>
             A = A<sub>base</sub> + A<sub>lateral</sub><br>
@@ -88,7 +87,6 @@ class Piramide {
     }
 
     gerarPassoAPassoVolume() {
-
         const areaBase = this.calcularAreaBase();
         const volume = this.calcularVolume();
 

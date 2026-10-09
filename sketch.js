@@ -1,24 +1,23 @@
-// ============================================================
-// ESTADO DA APLICAÇÃO
-// ============================================================
-
 let renderizador3D;
 let planificador2D;
 let formaAtual = 'cubo';
+let modoPiramide = 'altura';
 
 const formaSelector = document.getElementById('forma-selector');
 const inputsContainer = document.getElementById('inputs-dinamicos');
 const calculoArea = document.getElementById('calculo-area');
 const calculoVolume = document.getElementById('calculo-volume');
+const titulo3D = document.getElementById('titulo-3d');
+const titulo2D = document.getElementById('titulo-2d');
 
 const configuracaoFormas = {
-    cubo: { inputs: [{ nome: 'lado', label: 'Lado', min: 1, step: 0.1 }] },
-    paralelepipedo: { inputs: [{ nome: 'comprimento', label: 'Comprimento', min: 1, step: 0.1 }, { nome: 'largura', label: 'Largura', min: 1, step: 0.1 }, { nome: 'altura', label: 'Altura', min: 1, step: 0.1 }] },
-    cilindro: { inputs: [{ nome: 'raio', label: 'Raio', min: 1, step: 0.1 }, { nome: 'altura', label: 'Altura', min: 1, step: 0.1 }] },
-    cone: { inputs: [{ nome: 'raio', label: 'Raio', min: 1, step: 0.1 }, { nome: 'altura', label: 'Altura', min: 1, step: 0.1 }, { nome: 'geratriz', label: 'Geratriz', min: 1, step: 0.1 }] },
-    esfera: { inputs: [{ nome: 'raio', label: 'Raio', min: 1, step: 0.1 }] },
-    prisma: { inputs: [{ nome: 'lados', label: 'Lados da base', min: 3, max: 8, step: 1 }, { nome: 'ladoBase', label: 'Lado da base', min: 1, step: 0.1 }, { nome: 'altura', label: 'Altura', min: 1, step: 0.1 }] },
-    piramide: { inputs: [{ nome: 'lados', label: 'Lados da base', min: 3, max: 8, step: 1 }, { nome: 'ladoBase', label: 'Lado da base', min: 1, step: 0.1 }, { nome: 'altura', label: 'Altura', min: 1, step: 0.1 }] }
+    cilindro: { inputs: [{ nome: 'raio', label: 'Valor do raio', min: 1, step: 1 }, { nome: 'altura', label: 'Valor da altura', min: 1, step: 1 }] },
+    cone: { inputs: [{ nome: 'raio', label: 'Valor do raio', min: 1, step: 1 }, { nome: 'altura', label: 'Valor da altura', min: 1, step: 1 }, { nome: 'geratriz', label: 'Valor da geratriz', min: 1, step: 1 }] },
+    cubo: { inputs: [{ nome: 'lado', label: 'Altura', min: 1, step: 1 }] },
+    esfera: { inputs: [{ nome: 'raio', label: 'Valor do raio', min: 1, step: 1 }] },
+    paralelepipedo: { inputs: [{ nome: 'comprimento', label: 'Valor do comprimento', min: 1, step: 1 }, { nome: 'largura', label: 'Valor da largura', min: 1, step: 1 }, { nome: 'altura', label: 'Valor da altura', min: 1, step: 1 }] },
+    piramide: { inputs: [{ nome: 'lados', label: 'Quantidade de lados', min: 3, max: 8, step: 1 }, { nome: 'ladoBase', label: 'Valor do lado da base', min: 1, step: 1 }, { nome: 'altura', label: 'Valor da altura', min: 1, step: 1 }] },
+    prisma: { inputs: [{ nome: 'lados', label: 'Quantidade de lados', min: 3, max: 8, step: 1 }, { nome: 'ladoBase', label: 'Valor do lado da base', min: 1, step: 1 }, { nome: 'altura', label: 'Valor da altura', min: 1, step: 1 }] }
 };
 
 function criarInputs(forma) {
@@ -40,23 +39,89 @@ function criarInputs(forma) {
         input.value = config.nome === 'lados' ? 5 : 10;
 
         if (config.nome === 'lados') {
-            input.addEventListener('keydown', e => e.preventDefault());
-            input.addEventListener('paste', e => e.preventDefault());
+            input.addEventListener('input', () => {
+                let valor = Number(input.value);
+                if (!Number.isFinite(valor)) valor = 5;
+                valor = Math.round(valor);
+                valor = Math.max(3, Math.min(8, valor));
+                input.value = valor;
+                atualizarTudo();
+            });
+        } else {
+            input.addEventListener('input', atualizarTudo);
         }
 
-        input.addEventListener('input', atualizarTudo);
         grupo.appendChild(label);
         grupo.appendChild(input);
         inputsContainer.appendChild(grupo);
     });
+
+    if (forma === 'piramide') {
+        criarControlePiramide();
+    }
+}
+
+function criarControlePiramide() {
+    const grupo = document.createElement('div');
+    const label = document.createElement('label');
+    label.textContent = 'Definir por';
+
+    const select = document.createElement('select');
+    select.id = 'piramide-modo';
+
+    const opcaoAltura = document.createElement('option');
+    opcaoAltura.value = 'altura';
+    opcaoAltura.textContent = 'Altura';
+
+    const opcaoApotema = document.createElement('option');
+    opcaoApotema.value = 'apotema';
+    opcaoApotema.textContent = 'Apótema';
+
+    select.appendChild(opcaoAltura);
+    select.appendChild(opcaoApotema);
+    select.value = modoPiramide;
+
+    select.addEventListener('change', () => {
+        modoPiramide = select.value;
+
+        const input = document.getElementById('input-altura');
+        const labelInput = input.previousElementSibling;
+
+        if (modoPiramide === 'altura') {
+            labelInput.textContent = 'Valor da altura';
+        } else {
+            labelInput.textContent = 'Valor do apótema';
+        }
+
+        atualizarTudo();
+    });
+
+    grupo.appendChild(label);
+    grupo.appendChild(select);
+    inputsContainer.appendChild(grupo);
 }
 
 function obterValores() {
     const valores = {};
     const inputs = inputsContainer.querySelectorAll('input');
+
     inputs.forEach(input => {
         valores[input.name] = Number(input.value);
     });
+
+    if (formaAtual === 'piramide' && modoPiramide === 'apotema') {
+        const apotemaLateral = valores.altura;
+        const apotemaBase = valores.ladoBase / (2 * Math.tan(Math.PI / valores.lados));
+
+        if (apotemaLateral <= apotemaBase) {
+            valores.altura = NaN;
+        } else {
+            valores.altura = Math.sqrt(apotemaLateral ** 2 - apotemaBase ** 2);
+        }
+
+        valores.apotema = apotemaLateral;
+    }
+
     return valores;
 }
 
@@ -73,10 +138,17 @@ function criarForma(forma, valores) {
     }
 }
 
+
 function atualizarTudo() {
     if (!formaAtual) return;
+
+    const nomesFormas = { cubo: 'Cubo', paralelepipedo: 'Paralelepípedo', cilindro: 'Cilindro', cone: 'Cone', esfera: 'Esfera', prisma: 'Prisma', piramide: 'Pirâmide' };
+    titulo3D.textContent = `${nomesFormas[formaAtual]} 3D`;
+    titulo2D.textContent = `${nomesFormas[formaAtual]} planificado`;
+
     const valores = obterValores();
-    if (Object.values(valores).some(v => !Number.isFinite(v) || v <= 0)) return;
+
+    if (Object.values(valores).some(valor => !Number.isFinite(valor) || valor <= 0)) return;
 
     const forma = criarForma(formaAtual, valores);
     if (!forma) return;
@@ -84,48 +156,46 @@ function atualizarTudo() {
     window.formaGeometrica = forma;
     calculoArea.innerHTML = forma.gerarPassoAPassoArea();
     calculoVolume.innerHTML = forma.gerarPassoAPassoVolume();
+
+   
 }
 
 formaSelector.addEventListener('change', () => {
     formaAtual = formaSelector.value;
+    modoPiramide = 'altura';
     criarInputs(formaAtual);
     atualizarTudo();
 });
 
-// Inicialização das instâncias isoladas do p5.js
 document.addEventListener('DOMContentLoaded', () => {
     formaAtual = formaSelector.value;
     criarInputs(formaAtual);
     atualizarTudo();
 
-    // Instância 3D (WEBGL)
     new p5((p) => {
         p.setup = () => {
             const container = document.getElementById('canvas-3d');
-            const c = p.createCanvas(container.clientWidth || 400, container.clientHeight || 300, p.WEBGL);
-            c.parent(container);
-            renderizador3D = new Renderizador3D(p, container);
+            renderizador3D = new Renderizador3D(p, container); // A classe cuida de criar o Canvas[cite: 12, 13]
         };
+
         p.draw = () => {
             if (!formaAtual) return;
             const valores = obterValores();
-            if (Object.values(valores).some(v => !Number.isFinite(v) || v <= 0)) return;
+            if (Object.values(valores).some(valor => !Number.isFinite(valor) || valor <= 0)) return;
             renderizador3D.desenhar({ tipo: formaAtual, ...valores });
         };
     });
 
-    // Instância 2D (Tradicional)
     new p5((p) => {
         p.setup = () => {
             const container = document.getElementById('canvas-2d');
-            const c = p.createCanvas(container.clientWidth || 400, container.clientHeight || 300);
-            c.parent(container);
-            planificador2D = new Planificador2D(p, container);
+            planificador2D = new Planificador2D(p, container); // A classe cuida de criar o Canvas[cite: 9, 13]
         };
+
         p.draw = () => {
             if (!formaAtual) return;
             const valores = obterValores();
-            if (Object.values(valores).some(v => !Number.isFinite(v) || v <= 0)) return;
+            if (Object.values(valores).some(valor => !Number.isFinite(valor) || valor <= 0)) return;
             planificador2D.desenhar({ tipo: formaAtual, ...valores });
         };
     });

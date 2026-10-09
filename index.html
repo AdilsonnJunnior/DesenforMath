@@ -3,106 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>DesenforMath</title>
-
     <link rel="stylesheet" href="styles.css">
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.js"></script>
 </head>
-
 <body>
-
     <header>
         <h1>DesenforMath</h1>
     </header>
 
     <main class="ds-container">
-
-        <!-- ============================= -->
-        <!-- CANVAS 3D                      -->
-        <!-- ============================= -->
-
-        <section id="canvas-3d"></section>
-
-
-        <!-- ============================= -->
-        <!-- CANVAS 2D                      -->
-        <!-- ============================= -->
-
-        <section id="canvas-2d"></section>
-
-
-        <!-- ============================= -->
-        <!-- CONTROLES                      -->
-        <!-- ============================= -->
-
-        <section class="ds-col-controles">
-
-            <select id="forma-selector">
-
-                <option value="cubo">Cubo</option>
-
-                <option value="paralelepipedo">
-                    Paralelepípedo
-                </option>
-
-                <option value="cilindro">
-                    Cilindro
-                </option>
-
-                <option value="cone">
-                    Cone
-                </option>
-
-                <option value="esfera">
-                    Esfera
-                </option>
-
-                <option value="prisma">
-                    Prisma
-                </option>
-
-                <option value="piramide">
-                    Pirâmide
-                </option>
-
-            </select>
-            
-
-
-            <!-- ========================= -->
-            <!-- INPUTS DINÂMICOS            -->
-            <!-- ========================= -->
-
-            <div id="inputs-dinamicos">
-
-                <!-- Os inputs serão criados pelo JavaScript -->
-
-            </div>
-
+        <section id="canvas-3d">
+            <h2 id="titulo-3d"></h2>
         </section>
 
+        <section id="canvas-2d">
+            <h2 id="titulo-2d"></h2>
+        </section>
 
-        <!-- ============================= -->
-        <!-- CÁLCULO DE VOLUME              -->
-        <!-- ============================= -->
+        <section class="ds-col-controles">
+            <label for="forma-selector">Escolha a forma:</label>
+            <select id="forma-selector">
+                <option value="cilindro">Cilindro</option>
+                <option value="cone">Cone</option>
+                <option value="cubo">Cubo</option>
+                <option value="esfera">Esfera</option>
+                <option value="paralelepipedo">Paralelepípedo</option>
+                <option value="piramide">Pirâmide</option>
+                <option value="prisma">Prisma</option>
+            </select>
+
+            <div id="inputs-dinamicos"></div>
+
+            <div class="legenda">
+                <p><strong>Legenda?</strong></p>
+                <p><span class="linha-legenda vermelha"></span>Arestas da base</p>
+                <p><span class="linha-legenda azul"></span>Arestas laterais</p>
+                <p><span class="linha-legenda verde"></span>Raio, Geratriz ou Apótema</p>
+                <p><span class="linha-legenda preta"></span>Altura</p>
+            </div>
+        </section>
 
         <section id="calculo-volume"></section>
 
-
-        <!-- ============================= -->
-        <!-- CÁLCULO DE ÁREA                -->
-        <!-- ============================= -->
-
         <section id="calculo-area"></section>
-
     </main>
-
-
-    <!-- ============================= -->
-    <!-- CLASSES GEOMÉTRICAS            -->
-    <!-- ============================= -->
 
     <script src="cubo.js"></script>
     <script src="paralelepipedo.js"></script>
@@ -111,21 +56,8 @@
     <script src="esfera.js"></script>
     <script src="prisma.js"></script>
     <script src="piramide.js"></script>
-
-
-    <!-- ============================= -->
-    <!-- RENDERIZADORES                  -->
-    <!-- ============================= -->
-
     <script src="renderizador3d.js"></script>
     <script src="planificador2d.js"></script>
-
-
-    <!-- ============================= -->
-    <!-- CONTROLADOR                     -->
-    <!-- ============================= -->
-
     <script src="sketch.js"></script>
-
 </body>
 </html>

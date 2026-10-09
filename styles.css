@@ -1,7 +1,3 @@
-/* =========================================================
-   RESET GLOBAL
-   ========================================================= */
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,16 +12,10 @@ html, body {
     background-color: #f4f4f4;
 }
 
-
-/* =========================================================
-   HEADER
-   ========================================================= */
-
 header {
     height: 40px;
     background-color: #333;
     color: white;
-
     display: flex;
     justify-content: center;
     align-items: center;
@@ -37,157 +27,82 @@ header h1 {
     letter-spacing: 1px;
 }
 
-
-/* =========================================================
-   LAYOUT PRINCIPAL
-   ========================================================= */
-
 .ds-container {
     display: grid;
-
-    /*
-        Linhas:
-        65% → visualizações
-        35% → cálculos
-    */
     grid-template-rows: 65% 35%;
-
-    /*
-        Colunas:
-        30% → 3D
-        55% → 2D
-        15% → controles
-    */
     grid-template-columns: 30fr 55fr 15fr;
-
     width: 100%;
     height: calc(100vh - 40px);
-
     padding: 10px;
     gap: 10px;
 }
-
-
-/* =========================================================
-   CANVAS 3D
-   ========================================================= */
 
 #canvas-3d {
     grid-row: 1;
     grid-column: 1;
-
     width: 100%;
     height: 100%;
-
     background-color: #eee;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     overflow: hidden;
 }
-
-
-/* =========================================================
-   CANVAS 2D
-   ========================================================= */
 
 #canvas-2d {
     grid-row: 1;
     grid-column: 2;
-
     width: 100%;
     height: 100%;
     display: block;
-
     background-color: #eee;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     overflow: hidden;
 }
-
-
-/* =========================================================
-   CONTROLES
-   ========================================================= */
 
 .ds-col-controles {
     grid-row: 1 / span 2;
     grid-column: 3;
-
     display: flex;
     flex-direction: column;
     gap: 10px;
-
     background-color: #fff;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     padding: 10px;
-
     overflow-y: auto;
 }
 
-
-/* =========================================================
-   SELECT DA FORMA
-   ========================================================= */
-
 #forma-selector {
     width: 85%;
-
     align-self: center;
-
     padding: 8px;
-
     font-size: 0.95rem;
-
     border: 1px solid #ccc;
     border-radius: 4px;
-
     background-color: #fff;
-
     cursor: pointer;
 }
-
-
-/* =========================================================
-   INPUTS DINÂMICOS
-   ========================================================= */
 
 #inputs-dinamicos {
     display: flex;
     flex-direction: column;
     gap: 8px;
-
     width: 100%;
 }
-
-
-/* =========================================================
-   INPUTS E LABELS GERADOS PELO JS
-   ========================================================= */
 
 #inputs-dinamicos label {
     font-size: 0.9rem;
     font-weight: 500;
-
     color: #333;
 }
 
 #inputs-dinamicos input {
     width: 100%;
-
     padding: 7px 8px;
-
     font-size: 0.95rem;
-
     border: 1px solid #ccc;
     border-radius: 4px;
-
     background-color: #fff;
 }
 
@@ -196,52 +111,90 @@ header h1 {
     border-color: #777;
 }
 
+.legenda {
+    margin-top: 100px;
+    margin-bottom: 8px;
+    padding-top: 8px;
+}
 
-/* =========================================================
-   ÁREA DE CÁLCULO DE VOLUME
-   ========================================================= */
+.legenda-titulo {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.legenda-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.linha-legenda {
+    display: inline-block;
+    width: 28px;
+    height: 4px;
+    flex-shrink: 0;
+    margin-right: 8px;
+}
+
+.linha-legenda.vermelha {
+    background-color: rgb(220, 50, 50);
+}
+
+.linha-legenda.azul {
+    background-color: rgb(50, 100, 220);
+}
+
+.linha-legenda.verde {
+    background-color: rgb(50, 180, 80);
+}
+.linha-legenda.preta {
+    background-color: rgb(0,0,0);
+}
 
 #calculo-volume {
     grid-row: 2;
     grid-column: 1;
-
     width: 100%;
     height: 100%;
-
     background-color: #f9f9f9;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     padding: 10px;
-
     overflow-y: auto;
-
     font-size: 0.9rem;
     line-height: 1.4;
 }
 
-
-/* =========================================================
-   ÁREA DE CÁLCULO DE ÁREA
-   ========================================================= */
-
 #calculo-area {
     grid-row: 2;
     grid-column: 2;
-
     width: 100%;
     height: 100%;
-
     background-color: #f9f9f9;
-
     border: 1px solid #ddd;
     border-radius: 6px;
-
     padding: 10px;
-
     overflow-y: auto;
-
     font-size: 0.9rem;
     line-height: 1.4;
+}
+#titulo-3d, #titulo-2d {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    pointer-events: none;
+}
+#canvas-3d, #canvas-2d {
+    position: relative;
 }
